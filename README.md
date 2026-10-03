@@ -1,5 +1,7 @@
 # 📚 StudyPlanner Pro (Web Edition)
 
+My project is live 🎉
+Here is the live demo : https://studyplanner-2-ixzz.onrender.com/
 A modern, full-stack Study Planner web application built directly from your original C console program. It retains the exact core architecture while introducing a responsive UI, Google Sign-In, authentication, and productivity tools like a Pomodoro Study Timer.
 
 ---
