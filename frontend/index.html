@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner | Organize, Focus & Track</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="header-nav">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="brand-wrapper">
+                <div class="brand-icon">📖</div>
+                <div>
+                    <span class="brand-title">StudyPlanner</span>
+                    <span class="brand-tag">PRO</span>
+                </div>
+            </div>
+
+            <!-- Server Status Badge -->
+            <div id="backendStatusBadge" style="font-size: 0.75rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; background: var(--bg-surface); border-radius: var(--radius-full); border: 1px solid var(--border-subtle);">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Ready
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="nav-actions">
+                <!-- Pomodoro Timer Trigger -->
+                <button class="btn btn-secondary" id="btnOpenPomodoro" title="Open Focus Timer">
+                    <span>⏱️</span> Pomodoro
+                </button>
+
+                <!-- Theme Toggle -->
+                <button class="btn-icon" id="btnThemeToggle" title="Toggle Theme">
+                    ☀️
+                </button>
+
+                <!-- User Profile & Dropdown -->
+                <div class="user-menu">
+                    <div class="user-badge" id="userBadge">
+                        <img id="navUserAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="user-avatar">
+                        <span id="navUserName" class="user-name-label">Alex</span>
+                        <span style="font-size: 0.7rem; color: var(--text-muted);">▼</span>
+                    </div>
+
+                    <!-- Dropdown Content -->
+                    <div class="user-dropdown" id="userMenuDropdown">
+                        <div class="user-dropdown-header">
+                            <div class="user-dropdown-name" id="dropdownUserName">Alex Morgan</div>
+                            <div class="user-dropdown-email" id="dropdownUserEmail">alex@example.com</div>
+                        </div>
+                        <button class="dropdown-item" onclick="authManager.openAuthModal('login')">
+                            <span>🔑</span> Switch Account
+                        </button>
+                        <button class="dropdown-item danger" id="btnLogout">
+                            <span>🚪</span> Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container">
+        
+        <!-- Hero & Daily Motivation -->
+        <section class="hero-section">
+            <h1 class="hero-greeting">Welcome back, <span id="heroUserName" style="color: var(--primary);">Alex</span>! 👋</h1>
+            <div class="quote-box">
+                <i>💡</i>
+                <span id="motivationalQuote">“Success is the sum of small efforts, repeated day in and day out.”</span>
+            </div>
+        </section>
+
+        <!-- Stats Overview Cards -->
+        <section class="stats-grid">
+            <!-- Total Tasks -->
+            <div class="stat-card">
+                <div class="stat-icon total">📋</div>
+                <div class="stat-info" style="flex: 1;">
+                    <span class="stat-label">Total Tasks</span>
+                    <span class="stat-value" id="statTotalTasks">0</span>
+                </div>
+            </div>
+
+            <!-- Completed Tasks & Progress -->
+            <div class="stat-card">
+                <div class="stat-icon completed">✅</div>
+                <div class="stat-info" style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span class="stat-label">Completed</span>
+                        <span id="taskProgressPercent" style="font-size: 0.75rem; font-weight: 700; color: #10b981;">0%</span>
+                    </div>
+                    <span class="stat-value" id="statCompletedTasks">0</span>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="taskProgressFill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Tasks -->
+            <div class="stat-card">
+                <div class="stat-icon pending">⏳</div>
+                <div class="stat-info" style="flex: 1;">
+                    <span class="stat-label">Pending</span>
+                    <span class="stat-value" id="statPendingTasks">0</span>
+                </div>
+            </div>
+
+            <!-- Total Study Time -->
+            <div class="stat-card">
+                <div class="stat-icon time">🕒</div>
+                <div class="stat-info" style="flex: 1;">
+                    <span class="stat-label">Study Duration</span>
+                    <span class="stat-value" id="statStudyTime">0m</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search, Filter & Action Bar -->
+        <section class="controls-bar">
+            <!-- Search Bar -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="taskSearch" class="search-input" placeholder="Search tasks by subject or topic...">
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-group">
+                <!-- Priority Filter -->
+                <select id="priorityFilter" class="custom-select">
+                    <option value="all">All Priorities</option>
+                    <option value="3">🔥 High Priority</option>
+                    <option value="2">⚡ Medium Priority</option>
+                    <option value="1">🌱 Low Priority</option>
+                </select>
+
+                <!-- Status Filter -->
+                <select id="statusFilter" class="custom-select">
+                    <option value="all">All Status</option>
+                    <option value="pending">⏳ Pending Tasks</option>
+                    <option value="completed">✅ Completed Tasks</option>
+                </select>
+
+                <!-- Subject Filter -->
+                <select id="subjectFilter" class="custom-select">
+                    <option value="all">All Subjects</option>
+                </select>
+
+                <!-- Add Task Primary Button -->
+                <button class="btn btn-primary" id="btnOpenAddModal">
+                    <span style="font-size: 1.1rem; font-weight: bold;">+</span> Add Task
+                </button>
+            </div>
+        </section>
+
+        <!-- Tasks Grid View -->
+        <section class="tasks-grid" id="tasksGrid">
+            <!-- Dynamic task cards will be rendered here -->
+        </section>
+
+    </main>
+
+    <!-- =========================================================
+         MODALS
+         ========================================================= -->
+
+    <!-- 1. Add / Edit Task Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="taskModalTitle">Add Study Task</h3>
+                <button class="modal-close" id="btnCloseTaskModal">&times;</button>
+            </div>
+            <form id="taskForm">
+                <div class="modal-body">
+                    <!-- Subject Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="taskSubject">Subject Name</label>
+                        <input type="text" id="taskSubject" class="form-input" placeholder="e.g. Mathematics, Operating Systems" required maxlength="50">
+                        <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.35rem;">
+                            <span onclick="document.getElementById('taskSubject').value='Computer Science'" style="cursor: pointer; font-size: 0.72rem; padding: 2px 7px; background: rgba(255,255,255,0.06); border-radius: 4px; color: var(--text-secondary);">Computer Science</span>
+                            <span onclick="document.getElementById('taskSubject').value='Mathematics'" style="cursor: pointer; font-size: 0.72rem; padding: 2px 7px; background: rgba(255,255,255,0.06); border-radius: 4px; color: var(--text-secondary);">Mathematics</span>
+                            <span onclick="document.getElementById('taskSubject').value='Physics'" style="cursor: pointer; font-size: 0.72rem; padding: 2px 7px; background: rgba(255,255,255,0.06); border-radius: 4px; color: var(--text-secondary);">Physics</span>
+                        </div>
+                    </div>
+
+                    <!-- Topic Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="taskTopic">Topic</label>
+                        <input type="text" id="taskTopic" class="form-input" placeholder="e.g. Process Scheduling Algorithms" required maxlength="80">
+                    </div>
+
+                    <!-- Duration (in Minutes) -->
+                    <div class="form-group">
+                        <label class="form-label" for="taskDuration">Study Duration (Minutes)</label>
+                        <input type="number" id="taskDuration" class="form-input" placeholder="45" min="5" max="480" value="45" required>
+                    </div>
+
+                    <!-- Priority Selection (1=Low, 2=Med, 3=High) -->
+                    <div class="form-group">
+                        <label class="form-label">Priority Level</label>
+                        <div class="priority-selector">
+                            <label class="priority-option" data-value="1">
+                                <input type="radio" name="priority" value="1">
+                                <span>🌱 Low (1)</span>
+                            </label>
+                            <label class="priority-option selected" data-value="2">
+                                <input type="radio" name="priority" value="2" checked>
+                                <span>⚡ Medium (2)</span>
+                            </label>
+                            <label class="priority-option" data-value="3">
+                                <input type="radio" name="priority" value="3">
+                                <span>🔥 High (3)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelTaskModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitTask">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Pomodoro Focus Timer Modal -->
+    <div class="modal-overlay" id="pomodoroModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3 class="modal-title">⏱️ Pomodoro Study Session</h3>
+                <button class="modal-close" id="btnClosePomodoro">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Mode Switcher -->
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <div class="pomodoro-mode-selector">
+                        <button class="pomodoro-mode-btn active" data-mode="study">Study (25m)</button>
+                        <button class="pomodoro-mode-btn" data-mode="shortBreak">Short Break (5m)</button>
+                        <button class="pomodoro-mode-btn" data-mode="longBreak">Long Break (15m)</button>
+                    </div>
+                </div>
+
+                <!-- Circular Progress Timer -->
+                <div class="pomodoro-display">
+                    <div class="pomodoro-ring-wrapper">
+                        <svg class="pomodoro-svg" viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="100%" stop-color="#a855f7" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="pomodoro-bg-circle" cx="100" cy="100" r="90" />
+                            <circle id="timerProgressCircle" class="pomodoro-progress-circle" cx="100" cy="100" r="90" />
+                        </svg>
+                        <div class="pomodoro-time-text">
+                            <span class="timer-digits" id="timerDigits">25:00</span>
+                            <span class="timer-label">REMAINING</span>
+                        </div>
+                    </div>
+
+                    <div id="pomodoroCurrentTask" class="pomodoro-task-info" style="display: none;">
+                        🎯 Focusing on: Mathematics
+                    </div>
+
+                    <div class="pomodoro-controls">
+                        <button class="btn btn-secondary" id="btnTimerReset">↺ Reset</button>
+                        <button class="btn btn-primary" id="btnTimerStart" style="min-width: 140px;">▶️ Start Focus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Auth Modal (Sign In / Sign Up / Google Sign-In) -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content" style="max-width: 420px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="authModalTitle">Welcome Back</h3>
+                <button class="modal-close" id="btnCloseAuth">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Google Sign-In Primary Button -->
+                <button class="btn-google" id="btnGoogleAuth" type="button">
+                    <svg class="google-icon" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <div class="auth-divider">or with email</div>
+
+                <!-- Tabs: Login vs Register -->
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tabLogin">Sign In</div>
+                    <div class="auth-tab" id="tabSignup">Create Account</div>
+                </div>
+
+                <form id="authForm" style="display: flex; flex-direction: column; gap: 0.9rem;">
+                    <!-- Name (visible only on signup) -->
+                    <div class="form-group" id="nameGroup" style="display: none;">
+                        <label class="form-label" for="authName">Full Name</label>
+                        <input type="text" id="authName" class="form-input" placeholder="e.g. John Doe">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label" for="authEmail">Email Address</label>
+                        <input type="email" id="authEmail" class="form-input" placeholder="you@example.com" required value="alex@example.com">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="authPassword">Password</label>
+                        <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required value="password123">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="btnAuthSubmit" style="width: 100%; margin-top: 0.5rem;">
+                        Sign In to Account
+                    </button>
+                </form>
+
+                <!-- One-click Demo Credentials -->
+                <div class="demo-account-hint">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text-primary);">⚡ Quick Test Demo</div>
+                        <div style="font-size: 0.72rem;">Email: alex@example.com | Pass: password123</div>
+                    </div>
+                    <button class="btn btn-outline" id="btnDemoLogin" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;">
+                        One-Click Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Google Account Simulation Modal (For Instant Visual Feedback) -->
+    <div class="modal-overlay" id="googleModal">
+        <div class="modal-content" style="max-width: 380px; background: #ffffff; color: #202124;">
+            <div class="modal-header" style="border-bottom: 1px solid #e5e7eb; background: #ffffff;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg style="width: 22px; height: 22px;" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span style="font-weight: 600; font-size: 0.95rem;">Sign in with Google</span>
+                </div>
+                <button class="modal-close" onclick="authManager.closeGoogleAuthModal()" style="color: #5f6368;">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding: 1rem 1.25rem;">
+                <p style="font-size: 0.85rem; color: #5f6368; margin-bottom: 0.75rem;">
+                    Choose a Google account to continue to <b>StudyPlanner</b>:
+                </p>
+
+                <!-- Sample Google Account 1 -->
+                <div onclick="authManager.completeGoogleSignIn('Alex Morgan', 'alex.morgan.student@gmail.com', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')"
+                     style="display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem; border-radius: 8px; border: 1px solid #e5e7eb; cursor: pointer; transition: background 0.15s; margin-bottom: 0.5rem;"
+                     onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.875rem; color: #202124;">Alex Morgan</div>
+                        <div style="font-size: 0.75rem; color: #5f6368;">alex.morgan.student@gmail.com</div>
+                    </div>
+                </div>
+
+                <!-- Sample Google Account 2 -->
+                <div onclick="authManager.completeGoogleSignIn('Dev Student', 'dev.student.code@gmail.com', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150')"
+                     style="display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem; border-radius: 8px; border: 1px solid #e5e7eb; cursor: pointer; transition: background 0.15s;"
+                     onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.875rem; color: #202124;">Dev Student</div>
+                        <div style="font-size: 0.75rem; color: #5f6368;">dev.student.code@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="background: #f8fafc; border-top: 1px solid #e5e7eb;">
+                <button type="button" class="btn btn-secondary" onclick="authManager.closeGoogleAuthModal()" style="color: #374151; background: #ffffff; border: 1px solid #d1d5db;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
