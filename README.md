@@ -1,5 +1,7 @@
 # 📚 StudyPlanner Pro (Web Edition)
 
+https://studyplanner-pro.onrender.com/
+
 A full-stack, responsive Study Planner and Reading Hub web application built from your original C console program. It combines task management, subject-specific reading materials, and performance analytics.
 
 ---
