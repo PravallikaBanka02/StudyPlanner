@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner | Organize, Read & Track</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- =========================================================
+         SCREEN 1: USER SIGNUP & LOGIN LANDING SCREEN
+         ========================================================= -->
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-container">
+            <!-- Left Hero Branding -->
+            <div class="auth-hero-pane">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon">📖</div>
+                    <span class="brand-title" style="font-size: 1.8rem;">StudyPlanner</span>
+                    <span class="brand-tag">PRO</span>
+                </div>
+
+                <h2 style="font-size: 2.3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em;">
+                    Master Your Studies with Focus, Reading & Analytics.
+                </h2>
+
+                <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;">
+                    Plan your tasks, attach subject-specific reading documents to build consistent reading habits, and track your study efficiency with real-time analytics.
+                </p>
+
+                <!-- Key Feature Highlights -->
+                <div class="auth-feature-list">
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">📋</div>
+                        <div><b>Task & Priority Planner:</b> Structured task scheduling with duration and priority levels.</div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">📚</div>
+                        <div><b>Subject Reading Hub:</b> Attach textbook chapters, cheatsheets & notes to improve reading.</div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">📊</div>
+                        <div><b>Analytics & Overview:</b> Real-time study streak, subject time breakdown & focus score.</div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">⏱️</div>
+                        <div><b>Pomodoro Focus Timer:</b> 25m/5m cycles with audio notification chimes.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Auth Card -->
+            <div class="auth-card-pane">
+                <div style="margin-bottom: 1.25rem;">
+                    <h3 id="authCardTitle" style="font-size: 1.4rem; font-weight: 800;">Welcome Back</h3>
+                    <p id="authCardSubtitle" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+                        Sign in to access your study planner and reading materials.
+                    </p>
+                </div>
+
+                <!-- Google Sign-In Primary Button -->
+                <button class="btn-google" id="btnGoogleAuth" type="button" style="margin-bottom: 1rem;">
+                    <svg class="google-icon" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <div class="auth-divider">or with email</div>
+
+                <!-- Tabs: Sign In vs Create Account -->
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tabLogin">Sign In</div>
+                    <div class="auth-tab" id="tabSignup">Create Account</div>
+                </div>
+
+                <form id="authForm" style="display: flex; flex-direction: column; gap: 0.9rem;">
+                    <!-- Name (visible only on signup) -->
+                    <div class="form-group" id="nameGroup" style="display: none;">
+                        <label class="form-label" for="authName">Full Name</label>
+                        <input type="text" id="authName" class="form-input" placeholder="e.g. John Doe">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label" for="authEmail">Email Address</label>
+                        <input type="email" id="authEmail" class="form-input" placeholder="you@example.com" required value="alex@example.com">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="authPassword">Password</label>
+                        <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required value="password123">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="btnAuthSubmit" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;">
+                        Sign In to Account
+                    </button>
+                </form>
+
+                <!-- One-click Demo Credentials -->
+                <div class="demo-account-hint" style="margin-top: 1.25rem;">
+                    <div>
+                        <div style="font-weight: 700; color: var(--text-primary);">⚡ One-Click Demo Access</div>
+                        <div style="font-size: 0.72rem;">Try instantly without typing credentials</div>
+                    </div>
+                    <button class="btn btn-outline" id="btnDemoLogin" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;">
+                        Test as Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         SCREEN 2: MAIN DASHBOARD SCREEN (Protected)
+         ========================================================= -->
+    <div id="dashboardScreen" class="dashboard-screen" style="display: none;">
+        
+        <!-- Header Navigation Bar -->
+        <header class="header-nav">
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                
+                <!-- Brand Logo -->
+                <div class="brand-wrapper">
+                    <div class="brand-icon">📖</div>
+                    <div>
+                        <span class="brand-title">StudyPlanner</span>
+                        <span class="brand-tag">PRO</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs (Tasks | Reading Hub | Analytics) -->
+                <div class="nav-tabs-wrapper">
+                    <button class="nav-tab-btn active" data-view="tasks">
+                        <span>📋</span> Tasks & Planner
+                    </button>
+                    <button class="nav-tab-btn" data-view="documents">
+                        <span>📚</span> Reading Hub
+                    </button>
+                    <button class="nav-tab-btn" data-view="analytics">
+                        <span>📊</span> Analytics & Overview
+                    </button>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="nav-actions">
+                    <!-- Pomodoro Timer Trigger -->
+                    <button class="btn btn-secondary" id="btnOpenPomodoro" title="Open Focus Timer">
+                        <span>⏱️</span> Pomodoro
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <button class="btn-icon" id="btnThemeToggle" title="Toggle Theme">
+                        ☀️
+                    </button>
+
+                    <!-- User Profile & Dropdown -->
+                    <div class="user-menu">
+                        <div class="user-badge" id="userBadge">
+                            <img id="navUserAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="user-avatar">
+                            <span id="navUserName" class="user-name-label">Alex</span>
+                            <span style="font-size: 0.7rem; color: var(--text-muted);">▼</span>
+                        </div>
+
+                        <!-- Dropdown Content -->
+                        <div class="user-dropdown" id="userMenuDropdown">
+                            <div class="user-dropdown-header">
+                                <div class="user-dropdown-name" id="dropdownUserName">Alex Morgan</div>
+                                <div class="user-dropdown-email" id="dropdownUserEmail">alex@example.com</div>
+                            </div>
+                            <button class="dropdown-item danger" id="btnLogout">
+                                <span>🚪</span> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Container -->
+        <main class="container" style="padding-top: 1.5rem; padding-bottom: 3rem;">
+
+            <!-- =========================================================
+                 VIEW 1: TASKS & STUDY PLANNER
+                 ========================================================= -->
+            <div id="viewTasks">
+                <!-- Hero & Motivation -->
+                <section class="hero-section">
+                    <h1 class="hero-greeting">Welcome back, <span id="heroUserName" style="color: var(--primary);">Alex</span>! 👋</h1>
+                    <div class="quote-box">
+                        <i>💡</i>
+                        <span id="motivationalQuote">“Success is the sum of small efforts, repeated day in and day out.”</span>
+                    </div>
+                </section>
+
+                <!-- Stats Overview Cards -->
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon total">📋</div>
+                        <div class="stat-info" style="flex: 1;">
+                            <span class="stat-label">Total Tasks</span>
+                            <span class="stat-value" id="statTotalTasks">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon completed">✅</div>
+                        <div class="stat-info" style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <span class="stat-label">Completed</span>
+                                <span id="taskProgressPercent" style="font-size: 0.75rem; font-weight: 700; color: #10b981;">0%</span>
+                            </div>
+                            <span class="stat-value" id="statCompletedTasks">0</span>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="taskProgressFill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon pending">⏳</div>
+                        <div class="stat-info" style="flex: 1;">
+                            <span class="stat-label">Pending</span>
+                            <span class="stat-value" id="statPendingTasks">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon time">🕒</div>
+                        <div class="stat-info" style="flex: 1;">
+                            <span class="stat-label">Study Duration</span>
+                            <span class="stat-value" id="statStudyTime">0m</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Search, Filter & Action Bar -->
+                <section class="controls-bar">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="taskSearch" class="search-input" placeholder="Search tasks by subject or topic...">
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="priorityFilter" class="custom-select">
+                            <option value="all">All Priorities</option>
+                            <option value="3">🔥 High Priority</option>
+                            <option value="2">⚡ Medium Priority</option>
+                            <option value="1">🌱 Low Priority</option>
+                        </select>
+
+                        <select id="statusFilter" class="custom-select">
+                            <option value="all">All Status</option>
+                            <option value="pending">⏳ Pending Tasks</option>
+                            <option value="completed">✅ Completed Tasks</option>
+                        </select>
+
+                        <select id="subjectFilter" class="custom-select">
+                            <option value="all">All Subjects</option>
+                        </select>
+
+                        <button class="btn btn-primary" id="btnOpenAddModal">
+                            <span style="font-size: 1.1rem; font-weight: bold;">+</span> Add Task
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Tasks Grid View -->
+                <section class="tasks-grid" id="tasksGrid"></section>
+            </div>
+
+
+            <!-- =========================================================
+                 VIEW 2: SUBJECT READING MATERIALS HUB
+                 ========================================================= -->
+            <div id="viewDocuments" style="display: none;">
+                <!-- Header Banner -->
+                <div style="margin-bottom: 1.75rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h2 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;">
+                                📚 Subject Reading Materials Hub
+                            </h2>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.35rem; max-width: 650px;">
+                                Attach textbook chapters, cheatsheets, formulas, and lecture articles directly to specific subjects to improve your reading habits and understanding.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" id="btnOpenAddDocModal">
+                            <span>+</span> Add Study Document
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reading Stats Strip -->
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 1.75rem;">
+                    <div class="stat-card">
+                        <div class="stat-icon total">📄</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Documents</span>
+                            <span class="stat-value" id="statTotalDocs">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">✅</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Finished Reading</span>
+                            <span class="stat-value" id="statReadDocs">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon pending">📖</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Currently Reading</span>
+                            <span class="stat-value" id="statReadingDocs">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon time">⏱️</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Est. Reading Time</span>
+                            <span class="stat-value" id="statReadingTime">0m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Controls & Filters -->
+                <section class="controls-bar">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="docSearch" class="search-input" placeholder="Search reading materials, notes, or titles...">
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="docSubjectFilter" class="custom-select">
+                            <option value="all">All Subjects</option>
+                        </select>
+
+                        <select id="docStatusFilter" class="custom-select">
+                            <option value="all">All Reading Status</option>
+                            <option value="to_read">⏳ To Read</option>
+                            <option value="reading">📖 Currently Reading</option>
+                            <option value="completed">✅ Completed</option>
+                        </select>
+
+                        <select id="docTypeFilter" class="custom-select">
+                            <option value="all">All Types</option>
+                            <option value="notes">📝 Notes / Cheatsheet</option>
+                            <option value="pdf">📄 PDF Document</option>
+                            <option value="article">🌐 Web Article</option>
+                            <option value="book">📗 Textbook Chapter</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Documents Grid -->
+                <section class="tasks-grid" id="documentsGrid"></section>
+            </div>
+
+
+            <!-- =========================================================
+                 VIEW 3: ANALYTICS & OVERVIEW
+                 ========================================================= -->
+            <div id="viewAnalytics" style="display: none;">
+                <!-- Header Banner -->
+                <div style="margin-bottom: 1.75rem;">
+                    <h2 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;">
+                        📊 Study Analytics & Performance Overview
+                    </h2>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.35rem;">
+                        Real-time visualization of your study distribution, reading habits, task completion efficiency, and study streaks.
+                    </p>
+                </div>
+
+                <!-- Top Metric Badges -->
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2rem;">
+                    <div class="analytics-metric-box">
+                        <div class="stat-icon pending" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">🔥</div>
+                        <div>
+                            <div class="stat-label">Study Streak</div>
+                            <div class="stat-value" id="analyticsStreakDays">0 Days</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-metric-box">
+                        <div class="stat-icon completed" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">⚡</div>
+                        <div>
+                            <div class="stat-label">Efficiency Score</div>
+                            <div class="stat-value" id="analyticsEfficiencyScore">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-metric-box">
+                        <div class="stat-icon time">🕒</div>
+                        <div>
+                            <div class="stat-label">Total Time Invested</div>
+                            <div class="stat-value" id="analyticsTotalStudyHours">0 hrs</div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-metric-box">
+                        <div class="stat-icon total">🎯</div>
+                        <div>
+                            <div class="stat-label">Task Completion Rate</div>
+                            <div class="stat-value" id="analyticsCompletionRate">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Analytics Grid -->
+                <div class="analytics-grid">
+                    <!-- 1. Subject Effort & Time Distribution -->
+                    <div class="analytics-card" style="grid-column: 1 / -1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                            <h3 style="font-size: 1.15rem; font-weight: 700;">📈 Subject Time & Effort Distribution</h3>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Tasks & Reading Combined</span>
+                        </div>
+                        <div id="analyticsSubjectBars">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- 2. Reading Materials Tracker -->
+                    <div class="analytics-card">
+                        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">📖 Reading Progress Tracker</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                            Document completion status across all enrolled subjects:
+                        </p>
+                        <div id="analyticsDocTracker"></div>
+                    </div>
+
+                    <!-- 3. Priority Breakdown -->
+                    <div class="analytics-card">
+                        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">🎯 Task Priority Breakdown</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                            Distribution of High, Medium, and Low priority study topics:
+                        </p>
+                        <div id="analyticsPriorityBreakdown"></div>
+                    </div>
+
+                    <!-- 4. Study Recommendations & Insights -->
+                    <div class="analytics-card" style="grid-column: 1 / -1;">
+                        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">💡 Smart Study Insights & Recommendations</h3>
+                        <div id="analyticsInsights" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+
+    <!-- =========================================================
+         MODALS
+         ========================================================= -->
+
+    <!-- 1. Add / Edit Task Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="taskModalTitle">Add Study Task</h3>
+                <button class="modal-close" id="btnCloseTaskModal">&times;</button>
+            </div>
+            <form id="taskForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="taskSubject">Subject Name</label>
+                        <input type="text" id="taskSubject" class="form-input" placeholder="e.g. Mathematics, Operating Systems" required maxlength="50">
+                        <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.35rem;">
+                            <span onclick="document.getElementById('taskSubject').value='Computer Science'" style="cursor: pointer; font-size: 0.72rem; padding: 2px 7px; background: rgba(255,255,255,0.06); border-radius: 4px; color: var(--text-secondary);">Computer Science</span>
+                            <span onclick="document.getElementById('taskSubject').value='Mathematics'" style="cursor: pointer; font-size: 0.72rem; padding: 2px 7px; background: rgba(255,255,255,0.06); border-radius: 4px; color: var(--text-secondary);">Mathematics</span>
+                            <span onclick="document.getElementById('taskSubject').value='Physics'" style="cursor: pointer; font-size: 0.72rem; padding: 2px 7px; background: rgba(255,255,255,0.06); border-radius: 4px; color: var(--text-secondary);">Physics</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="taskTopic">Topic</label>
+                        <input type="text" id="taskTopic" class="form-input" placeholder="e.g. Process Scheduling Algorithms" required maxlength="80">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="taskDuration">Study Duration (Minutes)</label>
+                        <input type="number" id="taskDuration" class="form-input" placeholder="45" min="5" max="480" value="45" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Priority Level</label>
+                        <div class="priority-selector">
+                            <label class="priority-option" data-value="1">
+                                <input type="radio" name="priority" value="1">
+                                <span>🌱 Low (1)</span>
+                            </label>
+                            <label class="priority-option selected" data-value="2">
+                                <input type="radio" name="priority" value="2" checked>
+                                <span>⚡ Medium (2)</span>
+                            </label>
+                            <label class="priority-option" data-value="3">
+                                <input type="radio" name="priority" value="3">
+                                <span>🔥 High (3)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelTaskModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitTask">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Add / Edit Document Modal -->
+    <div class="modal-overlay" id="docModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="docModalTitle">Add Study Material / Document</h3>
+                <button class="modal-close" id="btnCloseDocModal">&times;</button>
+            </div>
+            <form id="docForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="docSubject">Subject</label>
+                        <input type="text" id="docSubject" class="form-input" placeholder="e.g. Computer Science, Mathematics" required maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="docTitle">Material / Document Title</label>
+                        <input type="text" id="docTitle" class="form-input" placeholder="e.g. CPU Scheduling Cheatsheet & Key Formulas" required maxlength="100">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="docType">Resource Type</label>
+                            <select id="docType" class="custom-select" style="width: 100%;">
+                                <option value="notes">📝 Notes / Cheatsheet</option>
+                                <option value="pdf">📄 PDF Document</option>
+                                <option value="article">🌐 Web Article</option>
+                                <option value="book">📗 Textbook Chapter</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="docReadTime">Est. Reading Time (Mins)</label>
+                            <input type="number" id="docReadTime" class="form-input" value="15" min="2" max="300" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="docUrl">External Resource URL (Optional)</label>
+                        <input type="url" id="docUrl" class="form-input" placeholder="https://example.com/reading-material.pdf">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="docContent">Reading Notes / Summary Content</label>
+                        <textarea id="docContent" class="form-textarea" rows="4" placeholder="Paste formulas, key definitions, summary notes, or reading highlights here..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="docStatus">Initial Reading Status</label>
+                        <select id="docStatus" class="custom-select" style="width: 100%;">
+                            <option value="to_read">⏳ To Read</option>
+                            <option value="reading">📖 Currently Reading</option>
+                            <option value="completed">✅ Finished Reading</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelDocModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitDoc">Save Material</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. In-App Reading View Modal -->
+    <div class="modal-overlay" id="readerModal">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <div>
+                    <span id="readerSubject" class="subject-badge" style="margin-bottom: 0.35rem; display: inline-block;">Subject</span>
+                    <h3 class="modal-title" id="readerTitle" style="font-size: 1.25rem;">Reading Material</h3>
+                </div>
+                <button class="modal-close" id="btnCloseReaderModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="readerMeta" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;"></div>
+                <div id="readerContent" class="reader-box"></div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                <a id="readerExternalLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="display: none;">
+                    <span>🔗</span> Open Original Link
+                </a>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeReaderModal()">Close</button>
+                    <button type="button" class="btn btn-primary" id="readerMarkCompleteBtn" style="background: linear-gradient(135deg, #10b981, #06b6d4);">
+                        <span>✓</span> Mark as Read
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Pomodoro Focus Timer Modal -->
+    <div class="modal-overlay" id="pomodoroModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3 class="modal-title">⏱️ Pomodoro Study Session</h3>
+                <button class="modal-close" id="btnClosePomodoro">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <div class="pomodoro-mode-selector">
+                        <button class="pomodoro-mode-btn active" data-mode="study">Study (25m)</button>
+                        <button class="pomodoro-mode-btn" data-mode="shortBreak">Short Break (5m)</button>
+                        <button class="pomodoro-mode-btn" data-mode="longBreak">Long Break (15m)</button>
+                    </div>
+                </div>
+
+                <div class="pomodoro-display">
+                    <div class="pomodoro-ring-wrapper">
+                        <svg class="pomodoro-svg" viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="100%" stop-color="#a855f7" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="pomodoro-bg-circle" cx="100" cy="100" r="90" />
+                            <circle id="timerProgressCircle" class="pomodoro-progress-circle" cx="100" cy="100" r="90" />
+                        </svg>
+                        <div class="pomodoro-time-text">
+                            <span class="timer-digits" id="timerDigits">25:00</span>
+                            <span class="timer-label">REMAINING</span>
+                        </div>
+                    </div>
+
+                    <div id="pomodoroCurrentTask" class="pomodoro-task-info" style="display: none;">
+                        🎯 Focusing on: Mathematics
+                    </div>
+
+                    <div class="pomodoro-controls">
+                        <button class="btn btn-secondary" id="btnTimerReset">↺ Reset</button>
+                        <button class="btn btn-primary" id="btnTimerStart" style="min-width: 140px;">▶️ Start Focus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Google Account Simulation Modal -->
+    <div class="modal-overlay" id="googleModal">
+        <div class="modal-content" style="max-width: 380px; background: #ffffff; color: #202124;">
+            <div class="modal-header" style="border-bottom: 1px solid #e5e7eb; background: #ffffff;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg style="width: 22px; height: 22px;" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span style="font-weight: 600; font-size: 0.95rem;">Sign in with Google</span>
+                </div>
+                <button class="modal-close" onclick="authManager.closeGoogleAuthModal()" style="color: #5f6368;">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding: 1rem 1.25rem;">
+                <p style="font-size: 0.85rem; color: #5f6368; margin-bottom: 0.75rem;">
+                    Choose a Google account to continue to <b>StudyPlanner</b>:
+                </p>
+
+                <!-- Sample Google Account 1 -->
+                <div onclick="authManager.completeGoogleSignIn('Alex Morgan', 'alex.morgan.student@gmail.com', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')"
+                     style="display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem; border-radius: 8px; border: 1px solid #e5e7eb; cursor: pointer; transition: background 0.15s; margin-bottom: 0.5rem;"
+                     onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.875rem; color: #202124;">Alex Morgan</div>
+                        <div style="font-size: 0.75rem; color: #5f6368;">alex.morgan.student@gmail.com</div>
+                    </div>
+                </div>
+
+                <!-- Sample Google Account 2 -->
+                <div onclick="authManager.completeGoogleSignIn('Dev Student', 'dev.student.code@gmail.com', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150')"
+                     style="display: flex; align-items: center; gap: 0.85rem; padding: 0.75rem; border-radius: 8px; border: 1px solid #e5e7eb; cursor: pointer; transition: background 0.15s;"
+                     onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.875rem; color: #202124;">Dev Student</div>
+                        <div style="font-size: 0.75rem; color: #5f6368;">dev.student.code@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="background: #f8fafc; border-top: 1px solid #e5e7eb;">
+                <button type="button" class="btn btn-secondary" onclick="authManager.closeGoogleAuthModal()" style="color: #374151; background: #ffffff; border: 1px solid #d1d5db;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
