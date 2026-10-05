@@ -14,110 +14,61 @@
 <body>
 
     <!-- =========================================================
-         SCREEN 1: USER SIGNUP & LOGIN LANDING SCREEN
+         SCREEN 1: USER LOGIN / SIGNUP SCREEN
          ========================================================= -->
     <div id="authScreen" class="auth-screen">
-        <div class="auth-container">
-            <!-- Left Hero Branding -->
-            <div class="auth-hero-pane">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div class="brand-icon">📖</div>
-                    <span class="brand-title" style="font-size: 1.8rem;">StudyPlanner</span>
-                    <span class="brand-tag">PRO</span>
-                </div>
-
-                <h2 style="font-size: 2.3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em;">
-                    Master Your Studies with Focus, Reading & Analytics.
-                </h2>
-
-                <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;">
-                    Plan your tasks, attach subject-specific reading documents to build consistent reading habits, and track your study efficiency with real-time analytics.
+        <div class="auth-card-pane" style="max-width: 440px; width: 100%; margin: 0 auto;">
+            <!-- Brand Header -->
+            <div style="text-align: center; margin-bottom: 1.75rem;">
+                <div class="brand-icon" style="margin: 0 auto 0.75rem auto; width: 48px; height: 48px; font-size: 1.4rem;">📖</div>
+                <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;">StudyPlanner</h2>
+                <p id="authCardSubtitle" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">
+                    Sign in to your account
                 </p>
-
-                <!-- Key Feature Highlights -->
-                <div class="auth-feature-list">
-                    <div class="auth-feature-item">
-                        <div class="auth-feature-icon">📋</div>
-                        <div><b>Task & Priority Planner:</b> Structured task scheduling with duration and priority levels.</div>
-                    </div>
-                    <div class="auth-feature-item">
-                        <div class="auth-feature-icon">📚</div>
-                        <div><b>Subject Reading Hub:</b> Attach textbook chapters, cheatsheets & notes to improve reading.</div>
-                    </div>
-                    <div class="auth-feature-item">
-                        <div class="auth-feature-icon">📊</div>
-                        <div><b>Analytics & Overview:</b> Real-time study streak, subject time breakdown & focus score.</div>
-                    </div>
-                    <div class="auth-feature-item">
-                        <div class="auth-feature-icon">⏱️</div>
-                        <div><b>Pomodoro Focus Timer:</b> 25m/5m cycles with audio notification chimes.</div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Right Auth Card -->
-            <div class="auth-card-pane">
-                <div style="margin-bottom: 1.25rem;">
-                    <h3 id="authCardTitle" style="font-size: 1.4rem; font-weight: 800;">Welcome Back</h3>
-                    <p id="authCardSubtitle" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
-                        Sign in to access your study planner and reading materials.
-                    </p>
+            <!-- Google Sign-In Primary Button -->
+            <button class="btn-google" id="btnGoogleAuth" type="button" style="margin-bottom: 1rem;">
+                <svg class="google-icon" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Continue with Google
+            </button>
+
+            <div class="auth-divider">or with email</div>
+
+            <!-- Tabs: Sign In vs Create Account -->
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tabLogin">Sign In</div>
+                <div class="auth-tab" id="tabSignup">Create Account</div>
+            </div>
+
+            <form id="authForm" style="display: flex; flex-direction: column; gap: 0.9rem;">
+                <!-- Name (visible only on signup) -->
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label class="form-label" for="authName">Full Name</label>
+                    <input type="text" id="authName" class="form-input" placeholder="Your name">
                 </div>
 
-                <!-- Google Sign-In Primary Button -->
-                <button class="btn-google" id="btnGoogleAuth" type="button" style="margin-bottom: 1rem;">
-                    <svg class="google-icon" viewBox="0 0 48 48">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                    </svg>
-                    Continue with Google
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label" for="authEmail">Email Address</label>
+                    <input type="email" id="authEmail" class="form-input" placeholder="name@example.com" required>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="form-label" for="authPassword">Password</label>
+                    <input type="password" id="authPassword" class="form-input" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="btnAuthSubmit" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;">
+                    Sign In to Account
                 </button>
-
-                <div class="auth-divider">or with email</div>
-
-                <!-- Tabs: Sign In vs Create Account -->
-                <div class="auth-tabs">
-                    <div class="auth-tab active" id="tabLogin">Sign In</div>
-                    <div class="auth-tab" id="tabSignup">Create Account</div>
-                </div>
-
-                <form id="authForm" style="display: flex; flex-direction: column; gap: 0.9rem;">
-                    <!-- Name (visible only on signup) -->
-                    <div class="form-group" id="nameGroup" style="display: none;">
-                        <label class="form-label" for="authName">Full Name</label>
-                        <input type="text" id="authName" class="form-input" placeholder="e.g. John Doe">
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label class="form-label" for="authEmail">Email Address</label>
-                        <input type="email" id="authEmail" class="form-input" placeholder="you@example.com" required value="alex@example.com">
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label class="form-label" for="authPassword">Password</label>
-                        <input type="password" id="authPassword" class="form-input" placeholder="••••••••" required value="password123">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" id="btnAuthSubmit" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;">
-                        Sign In to Account
-                    </button>
-                </form>
-
-                <!-- One-click Demo Credentials -->
-                <div class="demo-account-hint" style="margin-top: 1.25rem;">
-                    <div>
-                        <div style="font-weight: 700; color: var(--text-primary);">⚡ One-Click Demo Access</div>
-                        <div style="font-size: 0.72rem;">Try instantly without typing credentials</div>
-                    </div>
-                    <button class="btn btn-outline" id="btnDemoLogin" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;">
-                        Test as Demo
-                    </button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
