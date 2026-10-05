@@ -32,70 +32,26 @@ function readDb() {
     try {
         if (!fs.existsSync(DB_FILE)) {
             const initialData = {
-                users: [
-                    {
-                        id: 'demo-user-1',
-                        name: 'Alex Morgan',
-                        email: 'alex@example.com',
-                        passwordHash: hashPassword('password123', 'demosalt'),
-                        salt: 'demosalt',
-                        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
-                        provider: 'email',
-                        createdAt: new Date().toISOString()
-                    }
-                ],
-                tasks: [
-                    {
-                        id: 1,
-                        userId: 'demo-user-1',
-                        subject: 'Computer Science',
-                        topic: 'Process Scheduling Algorithms',
-                        duration: 60,
-                        priority: 3, // 3 = High
-                        completed: 1,
-                        createdAt: new Date(Date.now() - 86400000).toISOString()
-                    },
-                    {
-                        id: 2,
-                        userId: 'demo-user-1',
-                        subject: 'Mathematics',
-                        topic: 'Eigenvalues and Eigenvectors',
-                        duration: 90,
-                        priority: 2, // 2 = Medium
-                        completed: 0,
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 3,
-                        userId: 'demo-user-1',
-                        subject: 'Physics',
-                        topic: 'Quantum Wave Functions',
-                        duration: 45,
-                        priority: 3, // 3 = High
-                        completed: 0,
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 4,
-                        userId: 'demo-user-1',
-                        subject: 'English Literature',
-                        topic: 'Shakespearean Sonnets Analysis',
-                        duration: 30,
-                        priority: 1, // 1 = Low
-                        completed: 0,
-                        createdAt: new Date().toISOString()
-                    }
-                ],
-                nextTaskId: 5
+                users: [],
+                tasks: [],
+                documents: [],
+                nextTaskId: 1,
+                nextDocId: 1
             };
             fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
             return initialData;
         }
         const data = fs.readFileSync(DB_FILE, 'utf-8');
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        if (!parsed.users) parsed.users = [];
+        if (!parsed.tasks) parsed.tasks = [];
+        if (!parsed.documents) parsed.documents = [];
+        if (!parsed.nextTaskId) parsed.nextTaskId = (parsed.tasks.length ? Math.max(...parsed.tasks.map(t => t.id)) + 1 : 1);
+        if (!parsed.nextDocId) parsed.nextDocId = (parsed.documents.length ? Math.max(...parsed.documents.map(d => d.id)) + 1 : 1);
+        return parsed;
     } catch (err) {
         console.error('Error reading database file:', err);
-        return { users: [], tasks: [], nextTaskId: 1 };
+        return { users: [], tasks: [], documents: [], nextTaskId: 1, nextDocId: 1 };
     }
 }
 
@@ -169,32 +125,6 @@ app.post('/api/auth/register', (req, res) => {
     };
 
     db.users.push(newUser);
-
-    // Add starter tasks based on C code concepts
-    const starterTasks = [
-        {
-            id: db.nextTaskId++,
-            userId: newUser.id,
-            subject: 'Mathematics',
-            topic: 'Calculus Review & Problem Sets',
-            duration: 60,
-            priority: 2,
-            completed: 0,
-            createdAt: new Date().toISOString()
-        },
-        {
-            id: db.nextTaskId++,
-            userId: newUser.id,
-            subject: 'Computer Science',
-            topic: 'Data Structures & Algorithms',
-            duration: 90,
-            priority: 3,
-            completed: 0,
-            createdAt: new Date().toISOString()
-        }
-    ];
-
-    db.tasks.push(...starterTasks);
     writeDb(db);
 
     const token = jwt.sign(
@@ -284,19 +214,6 @@ app.post('/api/auth/google', (req, res) => {
         };
 
         db.users.push(user);
-
-        // Add default tasks
-        db.tasks.push({
-            id: db.nextTaskId++,
-            userId: user.id,
-            subject: 'Computer Science',
-            topic: 'System Architecture & Memory Management',
-            duration: 60,
-            priority: 3,
-            completed: 0,
-            createdAt: new Date().toISOString()
-        });
-
         writeDb(db);
     } else {
         // Update user profile info if provided
@@ -538,6 +455,240 @@ app.get('/api/stats', authenticateToken, (req, res) => {
         completedDurationMinutes,
         completionRate,
         subjects: subjectMap
+    });
+});
+
+// ==========================================
+// STUDY DOCUMENTS & READING MATERIALS ROUTES
+// ==========================================
+
+// 1. GET /api/documents (List documents with filters)
+app.get('/api/documents', authenticateToken, (req, res) => {
+    const db = readDb();
+    let userDocs = (db.documents || []).filter(d => d.userId === req.user.id);
+
+    const { subject, status, type, search } = req.query;
+
+    if (search) {
+        const q = search.toLowerCase();
+        userDocs = userDocs.filter(d => 
+            (d.title && d.title.toLowerCase().includes(q)) ||
+            (d.subject && d.subject.toLowerCase().includes(q)) ||
+            (d.content && d.content.toLowerCase().includes(q))
+        );
+    }
+
+    if (subject && subject !== 'all') {
+        userDocs = userDocs.filter(d => d.subject.toLowerCase() === subject.toLowerCase());
+    }
+
+    if (status && status !== 'all') {
+        userDocs = userDocs.filter(d => d.status === status);
+    }
+
+    if (type && type !== 'all') {
+        userDocs = userDocs.filter(d => d.type === type);
+    }
+
+    userDocs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    return res.json({ documents: userDocs, total: userDocs.length });
+});
+
+// 2. POST /api/documents (Add study document / reading resource)
+app.post('/api/documents', authenticateToken, (req, res) => {
+    const { subject, title, type, url, content, readTime, status } = req.body;
+
+    if (!subject || !title) {
+        return res.status(400).json({ error: 'Subject and Document Title are required.' });
+    }
+
+    const db = readDb();
+    if (!db.documents) db.documents = [];
+    if (!db.nextDocId) db.nextDocId = 1;
+
+    const newDoc = {
+        id: db.nextDocId++,
+        userId: req.user.id,
+        subject: subject.trim(),
+        title: title.trim(),
+        type: type || 'notes', // notes, pdf, article, book
+        url: url ? url.trim() : '',
+        content: content ? content.trim() : '',
+        readTime: parseInt(readTime) || 15, // in minutes
+        status: status || 'to_read', // to_read, reading, completed
+        createdAt: new Date().toISOString()
+    };
+
+    db.documents.push(newDoc);
+    writeDb(db);
+
+    return res.status(201).json({
+        message: 'Reading document added successfully!',
+        document: newDoc
+    });
+});
+
+// 3. PATCH /api/documents/:id/status (Update reading status)
+app.patch('/api/documents/:id/status', authenticateToken, (req, res) => {
+    const docId = parseInt(req.params.id);
+    const { status } = req.body;
+
+    if (!['to_read', 'reading', 'completed'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid reading status.' });
+    }
+
+    const db = readDb();
+    const docIndex = (db.documents || []).findIndex(d => d.id === docId && d.userId === req.user.id);
+
+    if (docIndex === -1) {
+        return res.status(404).json({ error: 'Document not found.' });
+    }
+
+    db.documents[docIndex].status = status;
+    db.documents[docIndex].updatedAt = new Date().toISOString();
+    writeDb(db);
+
+    return res.json({
+        message: 'Reading status updated!',
+        document: db.documents[docIndex]
+    });
+});
+
+// 4. PUT /api/documents/:id (Update document)
+app.put('/api/documents/:id', authenticateToken, (req, res) => {
+    const docId = parseInt(req.params.id);
+    const { subject, title, type, url, content, readTime, status } = req.body;
+
+    const db = readDb();
+    const docIndex = (db.documents || []).findIndex(d => d.id === docId && d.userId === req.user.id);
+
+    if (docIndex === -1) {
+        return res.status(404).json({ error: 'Document not found.' });
+    }
+
+    if (subject) db.documents[docIndex].subject = subject.trim();
+    if (title) db.documents[docIndex].title = title.trim();
+    if (type) db.documents[docIndex].type = type;
+    if (url !== undefined) db.documents[docIndex].url = url.trim();
+    if (content !== undefined) db.documents[docIndex].content = content.trim();
+    if (readTime !== undefined) db.documents[docIndex].readTime = parseInt(readTime) || 15;
+    if (status) db.documents[docIndex].status = status;
+    db.documents[docIndex].updatedAt = new Date().toISOString();
+
+    writeDb(db);
+
+    return res.json({
+        message: 'Document updated successfully!',
+        document: db.documents[docIndex]
+    });
+});
+
+// 5. DELETE /api/documents/:id (Delete document)
+app.delete('/api/documents/:id', authenticateToken, (req, res) => {
+    const docId = parseInt(req.params.id);
+    const db = readDb();
+
+    const docIndex = (db.documents || []).findIndex(d => d.id === docId && d.userId === req.user.id);
+
+    if (docIndex === -1) {
+        return res.status(404).json({ error: 'Document not found.' });
+    }
+
+    db.documents.splice(docIndex, 1);
+    writeDb(db);
+
+    return res.json({ message: 'Document deleted successfully!' });
+});
+
+// ==========================================
+// COMPREHENSIVE ANALYTICS & OVERVIEW ROUTE
+// ==========================================
+app.get('/api/analytics', authenticateToken, (req, res) => {
+    const db = readDb();
+    const userTasks = (db.tasks || []).filter(t => t.userId === req.user.id);
+    const userDocs = (db.documents || []).filter(d => d.userId === req.user.id);
+
+    // Task stats
+    const totalTasks = userTasks.length;
+    const completedTasks = userTasks.filter(t => t.completed === 1 || t.completed === true).length;
+    const pendingTasks = totalTasks - completedTasks;
+    const taskCompletionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+    // Study minutes
+    const totalStudyMinutes = userTasks.reduce((sum, t) => sum + (t.duration || 0), 0);
+    const completedStudyMinutes = userTasks
+        .filter(t => t.completed === 1 || t.completed === true)
+        .reduce((sum, t) => sum + (t.duration || 0), 0);
+
+    // Priorities
+    const priorityBreakdown = {
+        high: userTasks.filter(t => t.priority === 3).length,
+        medium: userTasks.filter(t => t.priority === 2).length,
+        low: userTasks.filter(t => t.priority === 1).length
+    };
+
+    // Document reading stats
+    const totalDocs = userDocs.length;
+    const readDocs = userDocs.filter(d => d.status === 'completed').length;
+    const readingDocs = userDocs.filter(d => d.status === 'reading').length;
+    const toReadDocs = userDocs.filter(d => d.status === 'to_read').length;
+    const totalReadingMinutes = userDocs.reduce((sum, d) => sum + (d.readTime || 0), 0);
+    const completedReadingMinutes = userDocs
+        .filter(d => d.status === 'completed')
+        .reduce((sum, d) => sum + (d.readTime || 0), 0);
+    const readingCompletionRate = totalDocs > 0 ? Math.round((readDocs / totalDocs) * 100) : 0;
+
+    // Subject consolidated breakdown
+    const subjectMap = {};
+    userTasks.forEach(t => {
+        if (!subjectMap[t.subject]) {
+            subjectMap[t.subject] = { subject: t.subject, tasksTotal: 0, tasksCompleted: 0, studyMinutes: 0, docsTotal: 0, docsRead: 0, readingMinutes: 0 };
+        }
+        subjectMap[t.subject].tasksTotal++;
+        if (t.completed === 1 || t.completed === true) subjectMap[t.subject].tasksCompleted++;
+        subjectMap[t.subject].studyMinutes += (t.duration || 0);
+    });
+
+    userDocs.forEach(d => {
+        if (!subjectMap[d.subject]) {
+            subjectMap[d.subject] = { subject: d.subject, tasksTotal: 0, tasksCompleted: 0, studyMinutes: 0, docsTotal: 0, docsRead: 0, readingMinutes: 0 };
+        }
+        subjectMap[d.subject].docsTotal++;
+        if (d.status === 'completed') subjectMap[d.subject].docsRead++;
+        subjectMap[d.subject].readingMinutes += (d.readTime || 0);
+    });
+
+    // Efficiency Score (combined task + reading progress + consistency, 0-100)
+    let efficiencyScore = 80;
+    if (totalTasks > 0 || totalDocs > 0) {
+        const tWeight = totalTasks > 0 ? (completedTasks / totalTasks) * 60 : 30;
+        const dWeight = totalDocs > 0 ? (readDocs / totalDocs) * 40 : 20;
+        efficiencyScore = Math.min(100, Math.round(tWeight + dWeight));
+    }
+
+    return res.json({
+        tasks: {
+            total: totalTasks,
+            completed: completedTasks,
+            pending: pendingTasks,
+            completionRate: taskCompletionRate,
+            totalMinutes: totalStudyMinutes,
+            completedMinutes: completedStudyMinutes
+        },
+        priorities: priorityBreakdown,
+        documents: {
+            total: totalDocs,
+            completed: readDocs,
+            reading: readingDocs,
+            toRead: toReadDocs,
+            completionRate: readingCompletionRate,
+            totalReadingMinutes,
+            completedReadingMinutes
+        },
+        subjects: Object.values(subjectMap),
+        streakDays: 4, // Simulated study streak
+        efficiencyScore
     });
 });
 
