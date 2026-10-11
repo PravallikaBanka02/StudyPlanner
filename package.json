@@ -1,0 +1,16 @@
+{
+  "name": "studyplanner-app",
+  "version": "1.0.0",
+  "description": "Full-stack StudyPlanner Suite with Focus Mode, Time Studied Analytics, and Subject Document Vault",
+  "main": "server/src/index.js",
+  "scripts": {
+    "start": "node server/src/index.js",
+    "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["studyplanner", "productivity", "pomodoro", "analytics"]
+}

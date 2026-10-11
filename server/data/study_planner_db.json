@@ -1,0 +1,153 @@
+{
+  "users": [
+    {
+      "id": "usr_demo",
+      "email": "demo@studyplanner.com",
+      "name": "Demo Tester",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTester",
+      "provider": "email",
+      "isTestingAccount": true,
+      "createdAt": "2026-10-11T13:23:22.406Z"
+    },
+    {
+      "id": "usr_sarah",
+      "email": "sarah.cs@stanford.edu",
+      "name": "Sarah Chen",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah%20Chen",
+      "provider": "google",
+      "isTestingAccount": true,
+      "createdAt": "2026-10-11T13:25:00.000Z"
+    },
+    {
+      "id": "usr_1791725868389",
+      "email": "newstudent@school.edu",
+      "name": "New Student",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=New%20Student&backgroundColor=6366f1",
+      "provider": "email",
+      "isTestingAccount": false,
+      "createdAt": "2026-10-11T13:37:48.389Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "subject": "Operating Systems",
+      "topic": "Process Scheduling Algorithms (Round Robin & SJF)",
+      "duriation": 45,
+      "priority": 3,
+      "completed": 1,
+      "userId": "usr_demo",
+      "createdAt": "2026-10-09T13:23:22.409Z"
+    },
+    {
+      "id": 2,
+      "subject": "Data Structures",
+      "topic": "Binary Search Trees & AVL Balancing",
+      "duriation": 60,
+      "priority": 3,
+      "completed": 0,
+      "userId": "usr_demo",
+      "createdAt": "2026-10-10T13:23:22.409Z"
+    },
+    {
+      "id": 3,
+      "subject": "Computer Networks",
+      "topic": "TCP/IP 3-Way Handshake & Flow Control",
+      "duriation": 30,
+      "priority": 2,
+      "completed": 0,
+      "userId": "usr_demo",
+      "createdAt": "2026-10-11T13:23:22.409Z"
+    },
+    {
+      "id": 4,
+      "subject": "Mathematics",
+      "topic": "Eigenvalues & Diagonalization",
+      "duriation": 50,
+      "priority": 1,
+      "completed": 0,
+      "userId": "usr_demo",
+      "createdAt": "2026-10-11T13:23:22.409Z"
+    },
+    {
+      "id": 5,
+      "subject": "Operating Systems",
+      "topic": "Process Scheduling Algorithms (Round Robin & SJF)",
+      "duriation": 45,
+      "priority": 3,
+      "completed": 1,
+      "userId": "usr_sarah",
+      "createdAt": "2026-10-09T13:23:22.409Z"
+    },
+    {
+      "id": 6,
+      "subject": "Data Structures",
+      "topic": "Binary Search Trees & AVL Balancing",
+      "duriation": 60,
+      "priority": 3,
+      "completed": 0,
+      "userId": "usr_sarah",
+      "createdAt": "2026-10-10T13:23:22.409Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "sess_1",
+      "taskId": 1,
+      "subject": "Operating Systems",
+      "topic": "Process Scheduling Algorithms",
+      "durationMinutes": 45,
+      "focusScore": 94,
+      "date": "2026-10-09",
+      "timestamp": "2026-10-09T13:23:22.409Z",
+      "userId": "usr_demo"
+    },
+    {
+      "id": "sess_2",
+      "taskId": 2,
+      "subject": "Data Structures",
+      "topic": "Binary Search Trees",
+      "durationMinutes": 35,
+      "focusScore": 98,
+      "date": "2026-10-10",
+      "timestamp": "2026-10-10T13:23:22.409Z",
+      "userId": "usr_demo"
+    },
+    {
+      "id": "sess_3",
+      "subject": "Mathematics",
+      "topic": "Linear Algebra matrices review",
+      "durationMinutes": 25,
+      "focusScore": 90,
+      "date": "2026-10-11",
+      "timestamp": "2026-10-11T13:23:22.409Z",
+      "userId": "usr_demo"
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_seed_1",
+      "subject": "Operating Systems",
+      "topic": "Process Scheduling Cheat Sheet",
+      "fileName": "os_scheduling_summary.txt",
+      "originalName": "os_scheduling_summary.txt",
+      "fileType": "text/plain",
+      "size": 4096,
+      "previewContent": "CPU Scheduling Notes:\n- First-Come First-Served (FCFS): Non-preemptive, suffers from convoy effect.\n- Shortest Job First (SJF): Optimal average waiting time.\n- Round Robin (RR): Preemptive with time quantum Q.\n- Priority Scheduling: Preemptive or non-preemptive, starvation resolved by aging.",
+      "uploadedAt": "2026-10-09T13:23:22.410Z",
+      "userId": "usr_demo"
+    },
+    {
+      "id": "doc_seed_2",
+      "subject": "Data Structures",
+      "topic": "BST and Tree Traversal Formulas",
+      "fileName": "bst_cheatsheet.txt",
+      "originalName": "bst_cheatsheet.txt",
+      "fileType": "text/plain",
+      "size": 3200,
+      "previewContent": "Binary Search Tree Properties:\n1. Left subtree of a node contains only keys lesser than the node's key.\n2. Right subtree contains keys greater.\n3. In-order traversal of a BST yields sorted values.\n4. Balanced height: O(log N) for search, insert, and delete.",
+      "uploadedAt": "2026-10-10T13:23:22.410Z",
+      "userId": "usr_demo"
+    }
+  ]
+}
