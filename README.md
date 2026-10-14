@@ -1,142 +1,122 @@
 # 🎓 StudyPlanner Pro Web Application
 
-An attractive, production-ready full-stack productivity web application evolved from your original C `StudyPlanner` engine.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-studyplanner--g4ab.onrender.com-success?style=for-the-badge&logo=render)](https://studyplanner-g4ab.onrender.com)
+[![Status](https://img.shields.io/badge/Status-Live%20%26%20Operational-brightgreen?style=for-the-badge)]()
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green?style=for-the-badge&logo=node.js)]()
+[![React](https://img.shields.io/badge/React-18.3-blue?style=for-the-badge&logo=react)]()
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=for-the-badge&logo=tailwindcss)]()
+
+> **Live Application URL:** **[https://studyplanner-g4ab.onrender.com](https://studyplanner-g4ab.onrender.com)**
+
+A full-stack study productivity suite evolved from a foundational C command-line study planner into a modern web application featuring Google/Email authentication, Pomodoro focus timers with procedural sound synthesis, time studied analytics, and a subject document vault.
+
+---
+
+## 🌐 Live Deployment
+
+The application is deployed and hosted on Render:
+
+🔗 **[https://studyplanner-g4ab.onrender.com](https://studyplanner-g4ab.onrender.com)**
+
+- **Frontend:** React 18, Vite, Tailwind CSS, Lucide Icons, Canvas Confetti.
+- **Backend:** Node.js Express REST API, Multer file upload engine, persistent JSON store.
+- **Audio Engine:** HTML5 Web Audio API synthesizer for offline ambient soundscapes.
 
 ---
 
 ## ✨ Features
 
 ### 1. 🔐 Authentication (Google & Email)
-- **Google Sign-In**: One-click Google authentication with simulated profiles (e.g., *Mohit Banka*, *Sarah Chen*) or custom credentials.
-- **Email & Password**: Seamless sign-in and registration with avatar generation and profile switching.
-- **Auto-Redirection**: Automatically guides the authenticated user directly into the **Dashboard**.
+- **Google Sign-In**: Quick Google account sign-in simulation with custom or preset accounts.
+- **Email & Password**: User signup and login with avatar creation.
+- **Clean State for New Users**: Any newly registered user or custom Google account starts completely fresh with **0 dummy data** (0 tasks, 0 sessions, 0 documents, 0 streak).
+- **Test Accounts (With Sample Data)**: Pre-configured 1-click test accounts (`Demo Tester`, `Sarah Chen`) allow testing with pre-populated tasks, historical study analytics, and sample cheatsheets.
 
-### 2. 📊 Interactive Study Dashboard
-- **Key Metrics Overview**:
-  - Total Hours & Minutes Studied
-  - Today's Focus Minutes vs Daily Targets
-  - Completed vs Pending Tasks with dynamic progress bar
-  - Study Streak counter with active flame badge (🔥)
-- **7-Day Activity Chart**: Visual bar graph comparing study duration across the week.
-- **Subject Time Distribution**: Percentage meters showing time allocation per subject.
-- **Next Priority Focus**: One-click launcher that pushes the top priority task directly into the Focus Timer.
-- **Active Task Checklist**: Mark tasks as completed or pending directly with real-time sync.
+### 2. 📊 Interactive Dashboard
+- **Key Metrics**:
+  - Total Hours & Cumulative Minutes Studied.
+  - Today's Focus Minutes vs 60m daily target.
+  - Completed vs Pending Tasks with an animated progress meter.
+  - Study Streak counter with active flame badge (🔥).
+- **7-Day Study Activity Chart**: Visual bar graph measuring daily focus consistency.
+- **Subject Time Allocation**: Real-time breakdown of time invested per subject.
+- **Quick Focus Launcher**: Automatically isolates the highest-priority pending task to jump straight into a focus sprint.
+- **Checklist Preview**: Toggle tasks completed directly from the dashboard.
 
-### 3. 📋 Study Tasks Manager (Evolved from C `main.c`)
-- **Direct Parity with C Code**:
-  - `id`: Unique incremental identifier
-  - `subject`: Subject name (e.g., *Operating Systems*, *Data Structures*)
-  - `topic`: Specific study topic
-  - `duriation`: Target duration in minutes
-  - `priority`: 1 = Low (Green), 2 = Medium (Amber), 3 = High (Rose)
-  - `completed`: 0 = Pending, 1 = Completed
-- **Search & Multi-Filters**: Filter by Subject, Priority level, or Completion Status. Search by topic or subject keywords.
-- **Interactive Actions**: Complete, Edit, Delete, or Launch into Focus Mode.
+### 3. 📋 Study Tasks Manager (C Program Parity)
+Directly evolves the original C program struct (`id`, `subject`, `topic`, `duriation`, `priority`, `completed`):
+- **Priority Badging**: 1 = 🟢 Low, 2 = 🟡 Medium, 3 = 🔴 High.
+- **Search & Filters**: Search topic or subject names, filter by Subject, Priority, or Completion Status.
+- **Task Actions**: Add, edit, toggle completed, delete, or launch into focus timer.
 
-### 4. ⏱️ Focus Mode & Ambient Ambiance
-- **Pomodoro & Deep Work Timers**:
-  - Presets (15m, 25m Pomodoro, 45m Lecture, 60m Deep Work) or custom task duration.
-  - Glowing circular countdown progress ring with seconds-level precision.
-- **Built-in Procedural Audio Synthesizer (Web Audio API)**:
-  - 🌧️ **Gentle Rainfall**: Pink noise filtered for natural rainfall.
-  - 🧠 **10Hz Alpha Waves**: Binaural beat synthesizer tuned for deep focus.
-  - 📻 **White Noise Shroud**: Distraction-blocking frequency mask.
-  - *No external MP3 dependencies; generated natively by browser audio synthesis.*
-- **Zen / Fullscreen Mode**: Remove all interface clutter for pure distraction-free study.
-- **Celebration & Automatic Logging**:
-  - Synthesized chime chord on completion.
-  - Confetti burst (`canvas-confetti`).
-  - Auto-prompts to mark the linked task completed and logs study time to your analytics.
+### 4. ⏱️ Focus Mode & Procedural Ambiance
+- **Pomodoro & Deep Work Timers**: Presets for 15m, 25m Pomodoro, 45m Lecture, 60m Deep Work, or custom task duration.
+- **Circular Glow Progress Ring**: Visual countdown with seconds-precision.
+- **Procedural Audio Synthesizer (Web Audio API)**:
+  - 🌧️ *Gentle Rainfall* (filtered pink noise)
+  - 🧠 *10Hz Alpha Waves* (binaural beat synthesizer tuned for deep focus)
+  - 📻 *White Noise Shroud*
+  - *Generated directly in-browser using Web Audio oscillators — zero external MP3 dependencies.*
+- **Zen / Fullscreen Mode**: Distraction-free study interface.
+- **Celebration & Auto-Logging**: Chime sound and confetti burst upon session completion with automatic study time logging.
 
 ### 5. 📈 Time Studied & Streak Analytics
-- **Comprehensive Visual Breakdown**:
-  - 7-Day study graph with minute counters.
-  - Total study hours and percentage share per subject.
-  - Consistency scoring and streak tracking.
-- **Full History Log**: Chronological table of study sessions (Date, Subject, Topic, Duration, Focus Score, Reflections).
-- **Log Offline Study**: Record textbook reading or offline classroom hours.
+- Complete chronological history table of all study sessions (Date, Subject, Topic, Duration, Focus Score, Notes).
+- Subject distribution percentages and weekly trends.
+- Option to manually log offline textbook or classroom study time.
 
 ### 6. 📁 Subject Documents Vault
-- **Subject-Specific File Organization**:
-  - Filter documents by subject (*Operating Systems*, *Data Structures*, *Mathematics*, etc.).
-  - Upload lecture notes, PDF guides, cheatsheets, source code (`.c`, `.cpp`, `.py`), or slides up to 50MB.
-- **Quick Preview**: Built-in preview modal for code snippets, text files, and notes.
-- **Direct Download & Delete**: Download uploaded files or remove outdated documents.
+- **Subject-Specific File Repository**:
+  - Filter and categorize documents by subject (*Operating Systems*, *Data Structures*, *Mathematics*, etc.).
+  - Upload lecture notes, PDF guides, cheatsheets, source code (`.c`, `.cpp`, `.py`), or slides (up to 50MB).
+- **In-App Preview & Downloads**: View text notes and source code directly in a preview modal; download attachments with one click.
 
 ---
 
-## 🎨 Color Palette & Design
-- **Theme**: Obsidian slate background (`#020617`, `#0f172a`) paired with Electric Indigo (`#6366f1`) and Royal Violet (`#8b5cf6`).
+## 🎨 Design & Color Palette
+
+- **Background**: Deep obsidian slate (`#020617`, `#0f172a`) with subtle glowing radial gradients.
+- **Primary Accent**: Electric Indigo (`#6366f1`) and Royal Violet (`#8b5cf6`).
 - **Priority Indicators**:
   - 🟢 Low Priority: Emerald Green (`#10b981`)
   - 🟡 Medium Priority: Warm Amber (`#f59e0b`)
   - 🔴 High Priority: Crimson Rose (`#f43f5e`)
-- **Typography**: Clean geometric typography using *Plus Jakarta Sans* and *JetBrains Mono*.
+- **Typography**: *Plus Jakarta Sans* for clean UI and *JetBrains Mono* for code/numbers.
 
 ---
 
-## 🚀 How to Run
-
-### Quick Start (Single Command)
-From the project root directory:
-
-```bash
-# Start backend (serves both API & Frontend on port 5000)
-npm start
-```
-Open **[http://localhost:5000](http://localhost:5000)** in your browser!
-
----
-
-### Development Mode (Hot-Reloading)
-
-#### 1. Backend Server
-```bash
-cd server
-npm start
-# Runs Express on http://localhost:5000
-```
-
-#### 2. Frontend Client (Vite Dev Server)
-```bash
-cd client
-npm run dev
-# Runs Vite on http://localhost:3000 (proxies API requests to :5000)
-```
-
----
-
-## 📂 Project Structure
+## 🛠️ Project Structure
 
 ```
 StudyPlanner/
 ├── main.c                 # Original C implementation
-├── package.json           # Root project script runner
-├── README.md              # Project documentation
+├── package.json           # Root project script runner (Render compatible)
+├── render.yaml            # Render Blueprint deployment configuration
+├── README.md              # Documentation
 ├── server/
 │   ├── package.json       # Express, Multer, Cors
-│   ├── uploads/           # Uploaded subject documents directory
+│   ├── uploads/           # Uploaded subject files directory
 │   ├── data/
 │   │   └── study_planner_db.json # Persistent JSON database
 │   └── src/
-│       ├── index.js       # Express REST API & static file server
-│       └── db.js          # File storage & default seed data
+│       ├── index.js       # Express REST API & static client server
+│       └── db.js          # File storage & demo account seed logic
 └── client/
-    ├── package.json       # React, Tailwind, Lucide, Canvas Confetti
+    ├── package.json       # React, Tailwind, Lucide, Canvas Confetti, Vite
     ├── vite.config.js     # Vite configuration with API proxy
-    ├── tailwind.config.js # Custom colors, gradients, and typography
-    ├── index.html         # Web entry point
+    ├── tailwind.config.js # Theme colors, gradients, and typography
+    ├── index.html         # HTML entry point
     └── src/
         ├── main.jsx       # App bootstrap
         ├── App.jsx        # Root application controller
-        ├── index.css      # Custom styling & glassmorphism
+        ├── index.css      # Glassmorphism & custom utility styling
         ├── services/
         │   ├── api.js           # REST API client
-        │   └── audioService.js  # Web Audio API procedural sound generator
+        │   └── audioService.js  # Procedural Web Audio sound generator
         ├── context/
         │   └── AuthContext.jsx  # Google & Email auth state
         ├── components/
-        │   ├── Navbar.jsx       # Top navigation, streak badge & audio controller
+        │   ├── Navbar.jsx       # Navigation, streak badge & audio controller
         │   └── AuthModal.jsx    # Google & Email sign-in modal
         └── pages/
             ├── Dashboard.jsx      # Overview cards, 7-day chart & priority launcher
@@ -145,3 +125,38 @@ StudyPlanner/
             ├── TimeStudied.jsx    # Study hours, subject allocation & history
             └── DocumentsVault.jsx # Subject document upload, preview & download
 ```
+
+---
+
+## 💻 Running Locally
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+
+### Installation & Run
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/PravallikaBanka02/StudyPlanner.git
+   cd StudyPlanner
+   ```
+
+2. Build and start the full-stack app:
+   ```bash
+   # Single command builds client and runs backend on port 5000:
+   npm run build
+   npm start
+   ```
+
+3. Open **`http://localhost:5000`** in your browser.
+
+For hot-reloading development mode:
+```bash
+# Terminal 1: Backend API
+cd server && npm start
+
+# Terminal 2: Frontend with Vite
+cd client && npm run dev
+```
+Navigate to **`http://localhost:3000`**.
