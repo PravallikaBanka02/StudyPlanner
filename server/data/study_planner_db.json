@@ -26,6 +26,15 @@
       "provider": "email",
       "isTestingAccount": false,
       "createdAt": "2026-10-11T13:37:48.389Z"
+    },
+    {
+      "id": "usr_1791780146416",
+      "email": "pravallikabanka7@gmail.com",
+      "name": "Pravallika banka",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=pravallika%20banka&backgroundColor=6366f1",
+      "provider": "email",
+      "isTestingAccount": false,
+      "createdAt": "2026-10-12T04:42:26.416Z"
     }
   ],
   "tasks": [
@@ -88,6 +97,16 @@
       "completed": 0,
       "userId": "usr_sarah",
       "createdAt": "2026-10-10T13:23:22.409Z"
+    },
+    {
+      "id": 7,
+      "subject": "data science",
+      "topic": "introduction of array",
+      "duriation": 45,
+      "priority": 2,
+      "completed": 0,
+      "userId": "usr_1791780146416",
+      "createdAt": "2026-10-14T04:55:57.308Z"
     }
   ],
   "sessions": [
